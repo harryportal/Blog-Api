@@ -1,4 +1,7 @@
-
+from blogapi import auth
+from flask import g, make_response, jsonify
+from blogapi.models import User
+from flask_restful import Resource
 
 
 @auth.verify_password
@@ -21,3 +24,7 @@ def verify_user(email_or_token, password):
 @auth.error_handler
 def error():
     return make_response(jsonify({"error": 'Invalid Credentials'}), 401)
+
+# creating a base class for resources that will need an authentication
+class loginRequired(Resource):
+    method_decorators = [auth.login_required]

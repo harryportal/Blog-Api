@@ -42,7 +42,7 @@ class NewUser(Resource):
         if error:
             return error, 400
         hashed_password = password_hash.hash(user['password'])
-        new_user = User(username=user['username'], email=user['email'], password=hashed_password)
+        new_user = User(username=user['username'], email=user['email'], password_hash=hashed_password)
         db.session.add(new_user)
         db.session.commit()
         return jsonify({"message": f"Account Created for {user['username']}"})

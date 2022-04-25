@@ -23,4 +23,4 @@ def create_app(config=Test_Config):
     return app
 
 
-from blogapi import auth, user
+from blogapi import auth, user, posts

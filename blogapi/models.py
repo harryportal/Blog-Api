@@ -39,7 +39,8 @@ class Post(db.Model):
     __tablename__ = 'Post'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
-    post = db.Column(db.String, nullable=False)
+    content = db.Column(db.String, nullable=False)
+    timestamp = db.Column(db.TIMESTAMP)
     comments = db.relationship('Comments', backref='post', lazy=True)
     user_id = db.Column(db.Integer, db.ForeignKey('User.id'), nullable=False)
 
@@ -67,6 +68,6 @@ class ValidateUserSchema(ma.Schema):
 
 class PostSchema(ma.Schema):
     id = fields.Integer(dump_only=True)
-    todo_name = fields.String(required=True)
-    completed = fields.Boolean()
-    user_todo = fields.Nested(UserSchema, only=['id', 'username', 'email'], required=True)
+    title = fields.String(required=True)
+    content = fields.String(required=True, validate=validate.Length(min=5, max=25))
+    user = fields.Nested(UserSchema, only=['id', 'username', 'email'])

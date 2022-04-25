@@ -1,9 +1,11 @@
 from blogapi import db, ma
 from jwt import encode, decode
 import os
+from dotenv import load_dotenv
 from marshmallow import fields, validate
 from passlib.apps import custom_app_context as password_hash
 
+load_dotenv()
 
 class User(db.Model):
     __tablename__ = 'User'
@@ -15,12 +17,12 @@ class User(db.Model):
     comments = db.relationship('Comments', backref='user', lazy=True)
 
     def generate_token(self):
-        token = encode({"user_id": self.id}, os.environ.get('SECRET_KEY'), algorithm='HS256')
+        token = encode({"user_id": self.id}, os.getenv('SECRET_KEY'), algorithm='HS256')
         return token
 
     def verify_token(self, token):
         try:
-            validate = decode(token, os.environ.get('SECRET_KEY'), algorithms=['HS256'])
+            validate = decode(token, os.getenv('SECRET_KEY'), algorithms=['HS256'])
         except:
             return False
         return validate['user_id'] if validate else False

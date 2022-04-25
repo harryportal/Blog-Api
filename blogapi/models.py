@@ -1,9 +1,11 @@
 from blogapi import db, ma
 from jwt import encode, decode
 import os
+from dotenv import load_dotenv
 from marshmallow import fields, validate
 from passlib.apps import custom_app_context as password_hash
 
+load_dotenv()
 
 class User(db.Model):
     __tablename__ = 'User'
@@ -15,12 +17,12 @@ class User(db.Model):
     comments = db.relationship('Comments', backref='user', lazy=True)
 
     def generate_token(self):
-        token = encode({"user_id": self.id}, os.environ.get('SECRET_KEY'), algorithm='HS256')
+        token = encode({"user_id": self.id}, os.getenv('SECRET_KEY'), algorithm='HS256')
         return token
 
     def verify_token(self, token):
         try:
-            validate = decode(token, os.environ.get('SECRET_KEY'), algorithms=['HS256'])
+            validate = decode(token, os.getenv('SECRET_KEY'), algorithms=['HS256'])
         except:
             return False
         return validate['user_id'] if validate else False
@@ -37,7 +39,8 @@ class Post(db.Model):
     __tablename__ = 'Post'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
-    post = db.Column(db.String, nullable=False)
+    content = db.Column(db.String, nullable=False)
+    timestamp = db.Column(db.TIMESTAMP)
     comments = db.relationship('Comments', backref='post', lazy=True)
     user_id = db.Column(db.Integer, db.ForeignKey('User.id'), nullable=False)
 
@@ -65,6 +68,6 @@ class ValidateUserSchema(ma.Schema):
 
 class PostSchema(ma.Schema):
     id = fields.Integer(dump_only=True)
-    todo_name = fields.String(required=True)
-    completed = fields.Boolean()
-    user_todo = fields.Nested(UserSchema, only=['id', 'username', 'email'], required=True)
+    title = fields.String(required=True)
+    content = fields.String(required=True, validate=validate.Length(min=5, max=25))
+    user = fields.Nested(UserSchema, only=['id', 'username', 'email'])

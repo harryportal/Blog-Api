@@ -4,7 +4,6 @@ from flask_marshmallow import Marshmallow
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-
 from .config import Test_Config
 
 api = Api()
@@ -24,4 +23,4 @@ def create_app(config=Test_Config):
     return app
 
 
-from blogapi import auth, user
+from blogapi import auth, user, posts

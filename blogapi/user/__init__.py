@@ -1,5 +1,5 @@
 from flask import request
-from blogapi.models import User, UserSchema, ValidateUserSchema
+from .models import User, UserSchema, ValidateUserSchema
 from blogapi import api, db
 from flask import g
 from flask import jsonify, make_response, abort

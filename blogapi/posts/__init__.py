@@ -1,8 +1,7 @@
-from flask_restful import Resource
 from blogapi import api
-from flask import jsonify, make_response, request, abort
+from flask import jsonify, request, abort
 from blogapi.auth import loginRequired
-from blogapi.models import Post, PostSchema, db
+from .models import Post, PostSchema, db
 from flask import g
 
 post_schema = PostSchema()

@@ -1,6 +1,6 @@
 from blogapi import auth
 from flask import g, make_response, jsonify
-from blogapi.models import User
+from blogapi.user.models import User
 from flask_restful import Resource
 
 

@@ -3,6 +3,7 @@ from flask import jsonify, request, abort
 from blogapi.auth import loginRequired
 from .models import Post, PostSchema, db
 from flask import g
+from blogapi.helper import Pagination
 
 post_schema = PostSchema()
 
@@ -21,10 +22,12 @@ class _Post(loginRequired):
 
     # get all posts for a user
     def get(self):
-        posts = Post.query.filter_by(user_id=g.user.id).all()
+        posts = Post.query.filter_by(user_id=g.user.id)
         if posts:
-            posts = post_schema.dump(posts, many=True)
-            return posts
+            pagination = Pagination(query=posts, schema=post_schema, request=request,
+                                    resource_url='_post')
+            pagination_results = pagination.paginate_query()
+            return pagination_results
         else:
             return jsonify({"message": "You have no post yet"}), 200
 

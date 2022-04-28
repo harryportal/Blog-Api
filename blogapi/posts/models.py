@@ -24,4 +24,5 @@ class PostSchema(ma.Schema):
     id = fields.Integer(dump_only=True)
     title = fields.String(required=True)
     content = fields.String(required=True, validate=validate.Length(min=5, max=25))
+    date_posted = fields.DateTime(required=True)
     user = fields.Nested(UserSchema, only=['id', 'username', 'email'])

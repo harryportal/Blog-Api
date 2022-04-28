@@ -9,7 +9,7 @@ post_schema = PostSchema()
 
 
 class _Post(loginRequired):
-    # create a post
+    # create a postc
     def post(self):
         post = request.get_json()
         validate = post_schema.validate(post)

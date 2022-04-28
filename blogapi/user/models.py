@@ -10,9 +10,9 @@ load_dotenv()
 class User(db.Model):
     __tablename__ = 'User'
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String, nullable=False)
-    password_hash = db.Column(db.String, nullable=False)
-    email = db.Column(db.String, nullable=False)
+    username = db.Column(db.String, unique=True,  nullable=False)
+    password_hash = db.Column(db.String)
+    email = db.Column(db.String, unique=True, nullable=False)
     post = db.relationship('Post', backref='author', lazy=True)
     comments = db.relationship('Comments', backref='user', lazy=True)
 

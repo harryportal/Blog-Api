@@ -6,3 +6,5 @@ class Test_Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
     PAGINATION_SIZE_PER_PAGE = 5
     SERVER_NAME = 'localhost:5000'
+    GOOGLE_CLIENT_ID = os.getenv('CLIENT_ID')
+    GOOGLE_CLIENT_SECRET = os.getenv('CLIENT_SECRET')

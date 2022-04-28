@@ -6,11 +6,14 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from .config import Test_Config
 
+
+
 api = Api()
 db = SQLAlchemy()
 auth = HTTPBasicAuth()
 ma = Marshmallow()
 migrate = Migrate()
+
 
 
 def create_app(config=Test_Config):
@@ -20,7 +23,13 @@ def create_app(config=Test_Config):
     db.init_app(app)
     ma.init_app(app)
     migrate.init_app(app, db)
+
+    from .Oauth import oauth, gauth
+    oauth.init_app(app)
+    app.register_blueprint(gauth)
+
+
     return app
 
 
-from blogapi import auth, user, posts
+from blogapi import auth, user, posts, Oauth

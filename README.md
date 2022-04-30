@@ -1,2 +1,2 @@
 # Blog-Api
-A full Blog Api created with flask_restful
+A Representation of the operations by a Wordpress Blog API built with Flask Restful Framework

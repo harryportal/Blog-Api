@@ -21,6 +21,9 @@ class Pagination:
             next_page_url = url_for(self.resource_url, page=page+1, _external=True)
         else:
             next_page_url = None
+
         posts = self.schema.dump(objects, many=True)
         return {'posts': posts, "next_page":next_page_url,
                 "prev_page":prev_page_url,'count':len(posts)}
+
+

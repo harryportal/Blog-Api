@@ -6,6 +6,9 @@ from marshmallow import fields, validate
 from passlib.apps import custom_app_context as password_hash
 from datetime import datetime, timedelta
 
+
+
+
 load_dotenv()
 
 
@@ -18,7 +21,7 @@ class User(db.Model):
     post = db.relationship('Post', backref='author', lazy=True)
     comments = db.relationship('Comments', backref='user', lazy=True)
 
-    def generate_token(self, expire_time=30):
+    def generate_token(self, expire_time=100000):
         token = encode({"user_id": self.id, 'exp': datetime.utcnow() + timedelta(seconds=expire_time)},
                        os.getenv('SECRET_KEY'), algorithm='HS256')
         return token
@@ -35,10 +38,13 @@ class User(db.Model):
         return verify
 
 
+
 class UserSchema(ma.Schema):
     id = fields.Integer(dump_only=True)  # makes it a read only data
     username = fields.String(required=True, validate=validate.Length(min=5, max=12))
     email = fields.Email(required=True)
+    post = fields.Nested('PostSchema', many=True)
+
 
 
 class ValidateUserSchema(ma.Schema):

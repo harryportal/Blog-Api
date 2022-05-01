@@ -19,7 +19,7 @@ class _Post(loginRequired):
         validate = post_schema.validate(post)
         if validate:
             return {"error": validate}, 400
-        new_post = Post(title=post['title'], content=post['content'], user=g.user.username)
+        new_post = Post(title=post['title'], content=post['content'], user_id=g.user.id, username=g.user.username)
         db.session.add(new_post)
         db.session.commit()
         return {"message": "Post Created"}, 201

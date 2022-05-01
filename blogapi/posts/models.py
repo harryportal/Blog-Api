@@ -11,7 +11,11 @@ class Post(db.Model):
     content = db.Column(db.String, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow().strftime('%Y-%m-%d %I:%M'))
     comments = db.relationship('Comments', backref='post', lazy=True)
-    user = db.Column(db.Integer, db.ForeignKey('User.username'))
+    user_id = db.Column(db.Integer, db.ForeignKey('User.id'))
+    username = db.Column(db.String)
+
+    def __repr__(self):
+        return f'Title:{self.title}, Content:{self.content}, Comments:{self.comments}'
 
 
 class Comments(db.Model):
@@ -44,5 +48,5 @@ class One_PostSchema(ma.Schema):
     title = fields.String(required=True)
     content = fields.String(required=True, validate=validate.Length(min=5))
     timestamp = fields.String()
-    user = fields.String()
+    username = fields.String()
 

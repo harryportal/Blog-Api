@@ -21,6 +21,11 @@ class User(db.Model):
     post = db.relationship('Post', backref='author', lazy=True)
     comments = db.relationship('Comments', backref='user', lazy=True)
 
+
+
+    def __repr__(self):
+        return f'Username:{self.username}, Email:{self.email}, ID:{self.id}'
+
     def generate_token(self, expire_time=100000):
         token = encode({"user_id": self.id, 'exp': datetime.utcnow() + timedelta(seconds=expire_time)},
                        os.getenv('SECRET_KEY'), algorithm='HS256')
@@ -36,6 +41,8 @@ class User(db.Model):
     def verify_password(self, password):
         verify = password_hash.verify(password, self.password_hash)
         return verify
+
+
 
 
 

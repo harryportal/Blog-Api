@@ -9,15 +9,28 @@ from passlib.apps import custom_app_context as password_hash
 from blogapi.auth import auth
 
 
+
 class Profile(loginRequired):
+    """returns the user profile"""
     def get(self):
         User_Schema = UserSchema()
-        try:
-            user = User.query.get(g.user.id)
-        except:
-            return jsonify({'error': 'Invalid Credentials'})
-        data = User_Schema.dump(user)
-        return data
+        return User_Schema.dump(g.user)
+
+    def post(self):
+        user_details = request.get_json()
+        if user_details:
+            check_username = User.query.filter_by(username=user_details['username']).first()
+            if user_details['username'] == g.user.username:
+                return {"message":"No Changes Made"}
+            if check_username:
+                return {"error":"Username Exists"}
+            g.user.username = user_details['username']
+            db.session.commit()
+        else:
+            return jsonify({"error":"Input required"})
+
+
+
 
 
 class NewUser(Resource):

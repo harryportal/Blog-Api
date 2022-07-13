@@ -5,6 +5,7 @@ from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from .config import Test_Config, ProductionConfig
+from flask_cors import CORS
 
 
 
@@ -23,6 +24,7 @@ def create_app(config=ProductionConfig):
     db.init_app(app)
     ma.init_app(app)
     migrate.init_app(app, db)
+    CORS(app)
 
     from .Oauth import oauth, gauth
     oauth.init_app(app)

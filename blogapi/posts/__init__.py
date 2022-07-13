@@ -103,5 +103,5 @@ class All_Post(Resource):
 
 api.add_resource(_Post, '/post')
 api.add_resource(Post_, '/post/<int:post_id>')
-api.add_resource(All_Post, '/posts')
+api.add_resource(All_Post, '/')
 api.add_resource(Comment, '/post/<int:post_id>/comment')

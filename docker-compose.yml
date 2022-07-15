@@ -1,0 +1,7 @@
+version: "3.8"
+services:
+  blog_api:
+    build: .
+    volumes:
+      - ./blogapi:/app
+
